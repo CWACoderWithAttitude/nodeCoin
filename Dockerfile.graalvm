@@ -1,0 +1,16 @@
+#FROM node:10.15
+FROM oracle/graalvm-ce:1.0.0-rc16
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+RUN npm i -g nodemon
+COPY *.js ./
+
+#EXPOSE 8080
+#CMD ["/bin/bash"]
+#CMD ["nodemon", "npm", "start"]
+#CMD ["./node_modules/nodemon/bin/nodemon.js"]	# --ignore *.csv --ignore *.json"]
+CMD ["npm", "start"]
