@@ -1,0 +1,4 @@
+imageName=uum_block_chain_graal_vm
+#blockChainServerPort=49154
+blockChainServerPort=49153
+
