@@ -95,5 +95,31 @@ app.post('/add', (req, res) => {
   res.send(JSON.stringify(uumChain2))
 });
 
+app.get('/validate', function(req, res){
+  var chain = readChainFromFile()._chain
+  for (var index  in chain){
+    let block = chain[index] 
+    console.log('[/validate]: block: ' + JSON.stringify(block))
+    if (index > 0){
+      var previousBlock = chain[index-1]
+      var idOK = block.id === previousBlock.id+1
+      //console.log('[/validate]: block: ' + JSON.stringify(block) + ', idOK: ' + idOK)
+      if (!idOK){
+        // https://de.wikipedia.org/wiki/HTTP-Statuscode
+        res.status(420)
+        res.json('Block #'+index+': id mismatch with predecessor')
+      }
+
+      if (previousBlock._hash !== block._prevHash){
+        // https://de.wikipedia.org/wiki/HTTP-Statuscode
+        res.status(420)
+        res.json('Block #'+index+': mismatch hash of previous block')
+      }
+    }
+  }
+  res.status(200)
+  res.json('OK')
+})
+
 app.listen(PORT, HOST)
 console.log(`Running on http://${HOST}:${PORT}`)
